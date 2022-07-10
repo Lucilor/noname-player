@@ -1,0 +1,29 @@
+.音乐播放器-intro {
+    border: 1px solid white;
+    border-radius: 20px;
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+
+    .title {
+        font-weight: bold;
+        margin-bottom: 15px;
+        text-align: center;
+    }
+
+    .list {
+        display: none;
+        flex-direction: column;
+        > :not(:last-child) {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+            padding-bottom: 7px;
+            margin-bottom: 7px;
+        }
+    }
+
+    .emphasize {
+        color: yellow;
+    }
+}

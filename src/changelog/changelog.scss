@@ -1,0 +1,48 @@
+.音乐播放器-changelog {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+
+    $close-btn-size: 50px;
+    .close-btn {
+        z-index: 1;
+        position: absolute;
+        top: 30px;
+        right: 30px;
+        width: $close-btn-size;
+        height: $close-btn-size;
+        background: rgba(0, 0, 0, 0.5);
+        border-radius: 50%;
+        cursor: pointer;
+        font-size: #{$close-btn-size - 10px};
+        line-height: $close-btn-size;
+        text-align: center;
+    }
+
+    .item {
+        position: relative;
+        width: 100%;
+        flex: 0 0 auto;
+        display: flex;
+        flex-direction: column;
+        &:not(:last-child) {
+            margin-bottom: 10px;
+        }
+
+        * {
+            position: relative;
+        }
+
+        .desc {
+            padding-left: 10px;
+        }
+    }
+
+    .ver-num {
+        color: aqua;
+    }
+
+    .ver-date {
+        color: yellow;
+    }
+}

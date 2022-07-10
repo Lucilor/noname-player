@@ -1,0 +1,40 @@
+{
+  "name": "noname-player",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Lucilor",
+  "license": "MIT",
+  "private": true,
+  "packageManager": "yarn@3.2.1",
+  "scripts": {
+    "start": "webpack --config webpack.dev.js",
+    "build": "webpack --config webpack.prod.js"
+  },
+  "devDependencies": {
+    "@types/zip-webpack-plugin": "^3.0.3",
+    "@typescript-eslint/eslint-plugin": "^5.30.5",
+    "@typescript-eslint/parser": "^5.30.5",
+    "clean-webpack-plugin": "^4.0.0",
+    "copy-webpack-plugin": "^11.0.0",
+    "css-loader": "^6.7.1",
+    "eslint": "^8.19.0",
+    "eslint-plugin-prefer-arrow": "^1.2.3",
+    "html-loader": "^3.1.2",
+    "jsonc": "^2.0.0",
+    "sass": "^1.53.0",
+    "sass-loader": "^13.0.2",
+    "style-loader": "^3.3.1",
+    "terser-webpack-plugin": "^5.3.3",
+    "ts-loader": "^9.3.1",
+    "typescript": "~4.7.4",
+    "webpack": "^5.73.0",
+    "webpack-cli": "^4.10.0",
+    "webpack-merge": "^5.8.0",
+    "webpack-node-externals": "^3.0.0",
+    "zip-webpack-plugin": "^4.0.1"
+  },
+  "dependencies": {
+    "cplayer": "^3.2.2",
+    "draggable": "^4.2.0"
+  }
+}

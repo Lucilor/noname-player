@@ -1,0 +1,34 @@
+<div class="音乐播放器-intro">
+    <div class="title">音乐播放器 v{{ extensionVersion }}</div>
+    <div class="title" onclick="game.音乐播放器_openChangelog()">更新日志</div>
+    <div
+        class="list-toggle"
+        onclick="document.querySelector('.音乐播放器-intro .list').style.display = 'flex';document.querySelector('.音乐播放器-intro .list-toggle').remove()"
+    >
+        展开
+    </div>
+    <div class="list">
+        <div>有<span style="color: red">*</span>的选项重启后才会生效</div>
+        <div>歌单输入框填写网易云音乐的歌单ID</div>
+        <!-- <div>歌单文件夹内放入<span class="emphasize">mp3文件</span>（其他格式可能无法播放）即可播放</div>
+        <div>
+            歌单文件夹内放入与歌曲同名的图片文件可以替换歌曲封面（若没有则尝试寻找名字为
+            <span class="emphasize">_playlist</span>
+            的图片文件）
+        </div>
+        <div>
+            歌单文件夹内放入与歌曲同名的json文件可以自定义更多信息（若没有则尝试寻找名字为
+            <span class="emphasize">_playlist</span>
+            的json文件）
+        </div>
+        <div>歌单文件夹内放入<span class="emphasize">_order.json</span>文件可以为歌曲排序</div> -->
+        <div>
+            <span>目前已知问题</span>
+            <ul>
+                <li>播放器有时会移出视图外（可通过下方“重置播放器位置”解决）</li>
+                <li>播放器看起来不太正常（比如文字模糊，有空白块等）</li>
+                <li>通过点击播放器最右侧的按钮来切换播放模式的话无法保存的设置</li>
+            </ul>
+        </div>
+    </div>
+</div>
