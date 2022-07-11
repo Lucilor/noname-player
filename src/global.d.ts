@@ -1,8 +1,9 @@
-import cPlayer from "cplayer";
+import cPlayer, {ICplayerOption} from "cplayer";
 
 declare global {
     interface Window {
         game: Game;
+        lib: any;
         cPlayer: cPlayer;
     }
 
@@ -18,4 +19,6 @@ declare global {
     interface HTMLElement {
         link: string | number;
     }
+
+    type Playlist = NonNullable<ICplayerOption["playlist"]>;
 }

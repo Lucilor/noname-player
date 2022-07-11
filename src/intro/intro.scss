@@ -13,6 +13,11 @@
         text-align: center;
     }
 
+    .list-toggle {
+        text-decoration: underline;
+        cursor: pointer;
+    }
+
     .list {
         display: none;
         flex-direction: column;

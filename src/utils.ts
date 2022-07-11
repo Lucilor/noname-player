@@ -1,8 +1,7 @@
 import {ICplayerOption} from "cplayer";
-import {extensionName} from "./const";
 
 export const getOpacityOptions = () => ({
-    "0.0": "0",
+    "0": "0.0",
     "0.1": "0.1",
     "0.2": "0.2",
     "0.3": "0.3",
@@ -12,7 +11,7 @@ export const getOpacityOptions = () => ({
     "0.7": "0.7",
     "0.8": "0.8",
     "0.9": "0.9",
-    "1.0": "1"
+    "1": "1.0"
 });
 
 export const replaceHtml = (html: string, data: Record<string, string>) => {
@@ -30,26 +29,9 @@ export const parseHtml = <T>(html: string) => {
 
 export type Playlist = NonNullable<ICplayerOption["playlist"]>;
 
-export const getPlaylist = async (id: string): Promise<Playlist | null> => {
-    try {
-        const cache = await window.game.getExtensionConfig(extensionName, "playlist");
-        try {
-            const cacheData = JSON.parse(cache);
-            if (cacheData.id === id) {
-                return cacheData.data;
-            }
-        } catch (error) {}
-        const res = await fetch(`https://candypurity.com/api/playlist/${id}`);
-        const data = await res.json();
-        if (data.code === 0) {
-            window.game.saveExtensionConfig(extensionName, "playlist", JSON.stringify({id, data: data.data}));
-            return data.data;
-        }
-    } catch (error) {}
-    return null;
-};
-
 export class CPlayerUtils {
+    static isDragging = false;
+
     static getRoot() {
         return window.cPlayer.view.getRootElement() as HTMLElement;
     }
@@ -59,20 +41,19 @@ export class CPlayerUtils {
         return parent as HTMLElement;
     }
 
-    static setBackgroundOpacity() {
+    static setBackgroundOpacity(opacity: string) {
         const root = this.getRoot();
         const mainBody = root.querySelector<HTMLDivElement>(".cp-mainbody");
         const poster = root.querySelector<HTMLDivElement>(".cp-poster");
-        const backgroundOpacity = window.game.getExtensionConfig(extensionName, "backgroundOpacity") || "1";
         if (mainBody) {
             if (root.classList.contains("cp-dark")) {
-                mainBody.style.backgroundColor = `rgba(0,0,0,${backgroundOpacity})`;
+                mainBody.style.backgroundColor = `rgba(0,0,0,${opacity})`;
             } else {
-                mainBody.style.backgroundColor = `rgba(255,255,255,${backgroundOpacity})`;
+                mainBody.style.backgroundColor = `rgba(255,255,255,${opacity})`;
             }
         }
         if (poster) {
-            poster.style.opacity = backgroundOpacity;
+            poster.style.opacity = opacity;
         }
     }
 
@@ -92,7 +73,6 @@ export class CPlayerUtils {
         } else {
             root.classList.remove("cp-dark");
         }
-        this.setBackgroundOpacity();
     }
 
     static setPlaylist(playlist: Playlist) {
@@ -102,12 +82,12 @@ export class CPlayerUtils {
     }
 
     static show() {
-        const host = this.getHost();
-        host.style.display = "block";
+        const root = this.getRoot();
+        root.style.display = "block";
     }
 
     static hide() {
-        const host = this.getHost();
-        host.style.display = "none";
+        const root = this.getRoot();
+        root.style.display = "none";
     }
 }
