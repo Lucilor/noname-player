@@ -28,7 +28,9 @@ export const parseHtml = <T>(html: string) => {
     return template.content.firstChild as T | null;
 };
 
-export const getPlaylist = async (id: string): Promise<ICplayerOption["playlist"] | null> => {
+export type Playlist = NonNullable<ICplayerOption["playlist"]>;
+
+export const getPlaylist = async (id: string): Promise<Playlist | null> => {
     try {
         const cache = await window.game.getExtensionConfig(extensionName, "playlist");
         try {
@@ -43,8 +45,7 @@ export const getPlaylist = async (id: string): Promise<ICplayerOption["playlist"
             window.game.saveExtensionConfig(extensionName, "playlist", JSON.stringify({id, data: data.data}));
             return data.data;
         }
-    } catch (error) {
-    }
+    } catch (error) {}
     return null;
 };
 
@@ -92,5 +93,21 @@ export class CPlayerUtils {
             root.classList.remove("cp-dark");
         }
         this.setBackgroundOpacity();
+    }
+
+    static setPlaylist(playlist: Playlist) {
+        const player = window.cPlayer;
+        player.playlist.slice().forEach((item) => player.remove(item));
+        playlist.forEach((item) => player.add(item));
+    }
+
+    static show() {
+        const host = this.getHost();
+        host.style.display = "block";
+    }
+
+    static hide() {
+        const host = this.getHost();
+        host.style.display = "none";
     }
 }

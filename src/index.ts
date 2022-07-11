@@ -3,6 +3,7 @@ import Draggable from "draggable";
 import {openChangelog} from "./changelog/changelog";
 import {extensionName, extensionVersion} from "./const";
 import "./cplayer.scss";
+import {FloatingMenu} from "./floating-menu/floating-menu";
 import introHtml from "./intro/intro.html";
 import "./intro/intro.scss";
 import "./polyfill";
@@ -15,18 +16,8 @@ game.import("extension", (lib: any, game: Game, ui: any, get: any, ai: any, _sta
     name: extensionName,
     content: async (config: any, pack: any) => {
         window.game = game;
-        const loadCPlayer = async (id: string) => {
-            if (!id) {
-                return;
-            }
+        const loadCPlayer = async () => {
             try {
-                const playlist = await getPlaylist(id);
-                if (!playlist) {
-                    alert(`${extensionName}无法获取网易云歌单：${id}`);
-                    return;
-                }
-                ui.backgroundMusic.src = "";
-
                 let volume = game.getExtensionConfig(extensionName, "volume");
                 if (typeof volume !== "number") {
                     volume = lib.config.volumn_background / 8.0;
@@ -46,7 +37,7 @@ game.import("extension", (lib: any, game: Game, ui: any, get: any, ai: any, _sta
                     element: host,
                     volume,
                     // autoplay: true,
-                    playlist,
+                    playlist: [],
                     big: game.getExtensionConfig(extensionName, "size") === "big",
                     dark: game.getExtensionConfig(extensionName, "color") === "dark",
                     shadowDom: false
@@ -54,7 +45,11 @@ game.import("extension", (lib: any, game: Game, ui: any, get: any, ai: any, _sta
                 });
                 cPlayer.mode = game.getExtensionConfig(extensionName, "mode");
                 window.cPlayer = cPlayer;
-                const root = cPlayer.view.getRootElement() as HTMLDivElement;
+                const root = CPlayerUtils.getRoot();
+                const progress = root.querySelector<HTMLElement>(".cp-progress-container");
+                if (progress) {
+                    progress.style.left = "0";
+                }
                 CPlayerUtils.setBackgroundOpacity();
                 new Draggable(host, {
                     handle: root.querySelector(".cp-poster"),
@@ -68,31 +63,37 @@ game.import("extension", (lib: any, game: Game, ui: any, get: any, ai: any, _sta
                     game.saveExtensionConfig(extensionName, "volume", value);
                 });
 
-                const i = setInterval(() => {
-                    if (cPlayer) {
-                        cPlayer.play();
-                        clearInterval(i);
-                    }
-                }, 500);
+                if (game.getExtensionConfig(extensionName, "autoPlay") !== false) {
+                    const i = setInterval(() => {
+                        if (cPlayer) {
+                            cPlayer.play();
+                            clearInterval(i);
+                        }
+                    }, 500);
+                }
             } catch (e) {
                 window.game.saveExtensionConfig(extensionName, "playlist", null);
                 alert(e);
             }
         };
 
-        const id = game.getExtensionConfig(extensionName, "playlistId");
-        if (ui.arena) {
-            loadCPlayer(id);
-        } else {
-            lib.arenaReady.push(() => {
-                loadCPlayer(id);
-            });
-        }
+        loadCPlayer();
         game.音乐播放器_setPlaylistId = (value: string) => {
             game.saveExtensionConfig(extensionName, "playlistId", value);
         };
         game.音乐播放器_setBackgroundOpacity = CPlayerUtils.setBackgroundOpacity.bind(CPlayerUtils);
         game.音乐播放器_openChangelog = openChangelog;
+
+        const id = game.getExtensionConfig(extensionName, "playlistId");
+        const playlist = await getPlaylist(id);
+        if (playlist) {
+            CPlayerUtils.setPlaylist(playlist);
+        } else {
+            alert(`${extensionName}无法获取网易云歌单：${id}`);
+            return;
+        }
+
+        new FloatingMenu();
     },
     help: {},
     config: {
@@ -147,6 +148,13 @@ game.import("extension", (lib: any, game: Game, ui: any, get: any, ai: any, _sta
             onclick: (item: string) => {
                 game.cPlayer.mode = item;
                 game.saveExtensionConfig(extensionName, "mode", item);
+            }
+        },
+        autoPlay: {
+            name: "自动播放",
+            init: true,
+            onclick: (value: boolean) => {
+                game.saveExtensionConfig(extensionName, "autoPlay", value);
             }
         },
         resetPosition: {

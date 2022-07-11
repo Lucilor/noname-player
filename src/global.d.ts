@@ -1,12 +1,9 @@
-import cPlayer, {ICplayerOption} from "cplayer";
-import _fs from "fs";
+import cPlayer from "cplayer";
 
 declare global {
     interface Window {
         game: Game;
         cPlayer: cPlayer;
-        fs: typeof _fs;
-        resolveLocalFileSystemURL?: (url: string, success: (fileSystem: any) => void, error: (error: any) => void) => void;
     }
 
     interface Game {
@@ -20,12 +17,5 @@ declare global {
 
     interface HTMLElement {
         link: string | number;
-    }
-
-    interface Playlist {
-        id: string;
-        name: string;
-        mode: "listloop" | "singlecycle" | "listrandom";
-        content: ICplayerOption["playlist"];
     }
 }
