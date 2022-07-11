@@ -56,10 +56,6 @@ game.import("extension", (lib: any, game: Game, ui: any, get: any, ai: any, _sta
                 window.cPlayer = cPlayer;
                 const root = cPlayer.view.getRootElement() as HTMLDivElement;
                 CPlayerUtils.setBackgroundOpacity();
-                // const progress = root.querySelector(".cp-progress-container") as HTMLElement;
-                // if (progress) {
-                //     progress.style.left = "0";
-                // }
                 new Draggable(host, {
                     handle: root.querySelector(".cp-poster"),
                     onDrag: (e: HTMLElement, x: number, y: number) => {
@@ -103,7 +99,7 @@ game.import("extension", (lib: any, game: Game, ui: any, get: any, ai: any, _sta
         playlist: {
             name: `歌单<span style='color:red;margin-right:20px'>*</span><input id="音乐播放器_playlistIdInput" value="${
                 game.getExtensionConfig(extensionName, "playlistId") || ""
-            }" onchange="game.音乐播放器_setPlaylistId(this.value)" />`,
+            }" oninput="game.音乐播放器_setPlaylistId(this.value)" />`,
             clear: true
         },
         size: {
@@ -134,7 +130,7 @@ game.import("extension", (lib: any, game: Game, ui: any, get: any, ai: any, _sta
             name: "背景透明度",
             intro: "重启后生效",
             item: getOpacityOptions(),
-            init: "1",
+            init: "1.0",
             onclick: (value: string) => {
                 game.saveExtensionConfig(extensionName, "backgroundOpacity", value);
                 game.音乐播放器_setBackgroundOpacity();
@@ -168,6 +164,7 @@ game.import("extension", (lib: any, game: Game, ui: any, get: any, ai: any, _sta
             clear: true,
             onclick: () => {
                 game.saveExtensionConfig(extensionName, "playlist", null);
+                alert("缓存已删除");
             }
         }
     },

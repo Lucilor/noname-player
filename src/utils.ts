@@ -39,11 +39,13 @@ export const getPlaylist = async (id: string): Promise<ICplayerOption["playlist"
         } catch (error) {}
         const res = await fetch(`https://candypurity.com/api/playlist/${id}`);
         const data = await res.json();
-        window.game.saveExtensionConfig(extensionName, "playlist", JSON.stringify({id, data: data.data}));
-        return data.data;
+        if (data.code === 0) {
+            window.game.saveExtensionConfig(extensionName, "playlist", JSON.stringify({id, data: data.data}));
+            return data.data;
+        }
     } catch (error) {
-        return null;
     }
+    return null;
 };
 
 export class CPlayerUtils {
@@ -52,8 +54,8 @@ export class CPlayerUtils {
     }
 
     static getHost() {
-        const parent = this.getRoot().parentNode as ShadowRoot;
-        return parent.host as HTMLElement;
+        const parent = this.getRoot().parentElement;
+        return parent as HTMLElement;
     }
 
     static setBackgroundOpacity() {

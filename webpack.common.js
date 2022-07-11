@@ -1,5 +1,10 @@
 const {CleanWebpackPlugin} = require("clean-webpack-plugin");
 // const CopyWebpackPlugin = require("copy-webpack-plugin");
+const fs = require("fs");
+
+if (!fs.existsSync("./config.json")) {
+    fs.writeFileSync("./config.json", JSON.stringify({nonameDir: "./dist/音乐播放器"}, null, 4));
+}
 
 module.exports = {
     module: {
@@ -31,7 +36,10 @@ module.exports = {
         filename: "[name].js" // 输出文件
     },
     plugins: [
-        new CleanWebpackPlugin()
+        new CleanWebpackPlugin({
+            dry: false,
+            dangerouslyAllowCleanPatternsOutsideProject: true
+        })
         // new CopyWebpackPlugin({
         //     patterns: [{from: "src/assets", to: "assets"}]
         // })

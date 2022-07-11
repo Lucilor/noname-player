@@ -1,5 +1,9 @@
 .c-player {
     z-index: 100;
     transition: none;
-    
+    text-shadow: none;
+
+    * {
+        position: relative;
+    }
 }
