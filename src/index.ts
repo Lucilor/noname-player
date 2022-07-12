@@ -28,7 +28,7 @@ game.import("extension", (lib: any, game: Game, ui: any, get: any, ai: any, _sta
                 document.body.appendChild(host);
                 const cPlayer = new cplayer({
                     element: host,
-                    volume,
+                    volume: Number(volume),
                     // autoplay: true,
                     playlist: [],
                     big: getConfig("isBig"),
@@ -55,7 +55,7 @@ game.import("extension", (lib: any, game: Game, ui: any, get: any, ai: any, _sta
                     onDragEnd: () => (CPlayerUtils.isDragging = false)
                 });
                 cPlayer.on("volumechange", (value) => {
-                    saveConfig("volume", value);
+                    saveConfig("volume", String(value), false);
                 });
 
                 if (getConfig("autoPlay")) {
@@ -96,6 +96,12 @@ game.import("extension", (lib: any, game: Game, ui: any, get: any, ai: any, _sta
             }" onchange="window.game.音乐播放器_setPlaylistId(this.value)" />`,
             clear: true
         },
+        volume: {
+            name: "音量",
+            item: getOpacityOptions(),
+            init: "1.0",
+            onclick: (item: string) => saveConfig("volume", item)
+        },
         isBig: {
             name: "大图模式",
             init: false,
@@ -109,7 +115,7 @@ game.import("extension", (lib: any, game: Game, ui: any, get: any, ai: any, _sta
         backgroundOpacity: {
             name: "背景透明度",
             item: getOpacityOptions(),
-            init: "1",
+            init: "1.0",
             onclick: (value: string) => saveConfig("backgroundOpacity", value)
         },
         playMode: {
@@ -157,8 +163,8 @@ game.import("extension", (lib: any, game: Game, ui: any, get: any, ai: any, _sta
         },
         intro: replaceHtml(introHtml, {extensionVersion}),
         author: "Lucilor",
-        diskURL: "",
-        forumURL: "",
+        diskURL: "https://github.com/Lucilor/noname-player/releases/latest",
+        forumURL: "https://github.com/Lucilor/noname-player/issues",
         version: extensionVersion
     },
     files: {character: [], card: [], skill: []}

@@ -9,7 +9,7 @@ export interface ExtensionConfig {
     playMode: "listloop" | "singlecycle" | "listrandom";
     autoPlay: boolean;
     playerPositon: [number, number];
-    volume: number;
+    volume: string;
     playlistCache: {id: string; data: Playlist} | null;
     playerVisible: boolean;
 }
@@ -22,7 +22,7 @@ export const getDefaultConfig = (lib: any): ExtensionConfig => ({
     playMode: "listloop",
     autoPlay: true,
     playerPositon: [0, 0],
-    volume: lib.config.volumn_background / 8.0,
+    volume: String(lib.config.volumn_background / 8.0),
     playlistCache: null,
     playerVisible: true
 });
@@ -69,6 +69,8 @@ export const saveConfig = async <T extends keyof ExtensionConfig>(key: T, value:
             if (playlist) {
                 CPlayerUtils.setPlaylist(value2);
             }
+        } else if (key2 === "volume") {
+            window.cPlayer.setVolume(Number(value2));
         }
     }
 };

@@ -1,7 +1,7 @@
 import {ICplayerOption} from "cplayer";
 
 export const getOpacityOptions = () => ({
-    "0": "0.0",
+    "0.0": "0.0",
     "0.1": "0.1",
     "0.2": "0.2",
     "0.3": "0.3",
@@ -11,7 +11,7 @@ export const getOpacityOptions = () => ({
     "0.7": "0.7",
     "0.8": "0.8",
     "0.9": "0.9",
-    "1": "1.0"
+    "1.0": "1.0"
 });
 
 export const replaceHtml = (html: string, data: Record<string, string>) => {
